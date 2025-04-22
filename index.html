@@ -1,7 +1,24 @@
-<!DOCTYPE html>
-<!-- The full HTML code goes here, but for simplicity, placeholder will be inserted.
-     You should paste the full app code you've been working on. -->
-<html lang="en">
-<head><meta charset="UTF-8"><title>Folkloriz</title></head>
-<body><h1>Upload your final HTML code here</h1></body>
-</html>
+<!-- Upload Page -->
+<div id="upload" style="display:none">
+  <h2>Sube tu Video</h2>
+  <div class="upload-form">
+    <p>Selecciona un archivo de video de tu práctica para recibir retroalimentación.</p>
+    <input type="file" accept="video/*" id="videoUpload">
+    <p>Comentarios (opcional):</p>
+    <textarea id="uploadComments" placeholder="¿Hay algo específico en lo que te gustaría recibir ayuda?"></textarea>
+    <button onclick="submitUpload()">Enviar</button>
+  </div>
+  <button onclick="window.location.href='progress.html'">Ver Progreso</button>
+</div>
+
+<script>
+  function submitUpload() {
+    const file = document.getElementById('videoUpload').files[0];
+    if (file) {
+      localStorage.setItem('uploadSubmitted', 'true');
+      alert('¡Gracias! Tu video ha sido enviado para revisión.');
+    } else {
+      alert('Por favor, selecciona un archivo antes de enviar.');
+    }
+  }
+</script>

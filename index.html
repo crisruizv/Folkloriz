@@ -1,24 +1,272 @@
-<!-- Upload Page -->
-<div id="upload" style="display:none">
-  <h2>Sube tu Video</h2>
-  <div class="upload-form">
-    <p>Selecciona un archivo de video de tu práctica para recibir retroalimentación.</p>
-    <input type="file" accept="video/*" id="videoUpload">
-    <p>Comentarios (opcional):</p>
-    <textarea id="uploadComments" placeholder="¿Hay algo específico en lo que te gustaría recibir ayuda?"></textarea>
-    <button onclick="submitUpload()">Enviar</button>
-  </div>
-  <button onclick="window.location.href='progress.html'">Ver Progreso</button>
-</div>
-
-<script>
-  function submitUpload() {
-    const file = document.getElementById('videoUpload').files[0];
-    if (file) {
-      localStorage.setItem('uploadSubmitted', 'true');
-      alert('¡Gracias! Tu video ha sido enviado para revisión.');
-    } else {
-      alert('Por favor, selecciona un archivo antes de enviar.');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folkloriz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding: 2em;
+      margin: 0;
+      background-color: #1e1e1e;
+      color: #ffffff;
     }
-  }
-</script>
+    h1, h2 {
+      font-size: 2em;
+      margin-bottom: 0.5em;
+    }
+    p {
+      color: #d1d1d1;
+    }
+    button {
+      font-size: 1.2em;
+      padding: 1em 2em;
+      margin-top: 2em;
+      background-color: #e85c50;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #c94b42;
+    }
+    input[type="text"], input[type="email"], input[type="number"], textarea {
+      padding: 1em;
+      margin-top: 1em;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 8px;
+      border: 1px solid #555;
+      background-color: #2a2a2a;
+      color: white;
+    }
+    .module, .profile, .upload-form, .progress-container, .tap-area, .login-box {
+      background: #2e2e2e;
+      padding: 2em;
+      margin: 2em auto;
+      border-radius: 12px;
+      max-width: 500px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+    .progress-bar {
+      width: 80%;
+      height: 20px;
+      margin: 1em auto;
+      background: #444;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background-color: #4caf50;
+    }
+    .badges {
+      margin-top: 1em;
+      display: flex;
+      justify-content: center;
+      gap: 1em;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: #3a3a3a;
+      color: #ffd700;
+      padding: 0.5em 1em;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="mainTitle">Bienvenid@s a <em>Folkloriz</em></h1>
+  <p id="mainDesc">¡Descubre, aprende y practica baile folklórico desde cualquier lugar!</p>
+  <button onclick="window.location.href='modules.html'" id="mainBtn">Start Dancing</button>
+
+  <!-- Login Page -->
+  <div id="login" style="display:none">
+    <h2>Inicia Sesión</h2>
+    <div class="login-box">
+      <input type="text" placeholder="Nombre de usuario">
+      <input type="email" placeholder="Correo electrónico">
+      <button onclick="window.location.href='modules.html'">Comenzar</button>
+    </div>
+  </div>
+
+  <!-- Module Menu Page -->
+  <div id="modules" style="display:none">
+    <h2>Elige tu módulo</h2>
+    <div class="module" onclick="window.location.href='demo.html'">Nivel 1: Pasos Básicos</div>
+    <div class="module locked">Nivel 2: Zapateado</div>
+    <div class="module locked">Nivel 3: Giros</div>
+    <div class="module locked">Nivel 4: Coordinación con Música</div>
+    <div class="module locked">Nivel 5: Rutina Completa</div>
+    <button onclick="window.location.href='progress.html'">View Progress</button>
+    <button onclick="window.location.href='profile.html'">My Profile</button>
+  </div>
+
+  <!-- Demo Page -->
+  <div id="demo" style="display:none">
+    <h2>Demo: Pasos Básicos</h2>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo Video" allowfullscreen></iframe>
+    <p>Observa los pasos básicos y cómo se conectan con la música. Cuando estés list@, ¡es tu turno!</p>
+    <button onclick="window.location.href='practice.html'">Try It Now!</button>
+  </div>
+
+  <!-- Practice Page -->
+  <div id="practice" style="display:none">
+    <h2>¡Hora de Practicar!</h2>
+    <audio controls>
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+      Tu navegador no soporta el elemento de audio.
+    </audio>
+    <div class="tap-area">
+      <p>Toca el botón al ritmo de la música</p>
+      <button class="tap-button" onclick="alert('¡Buen ritmo!')">Tap</button>
+    </div>
+    <button onclick="window.location.href='upload.html'">Upload Video for Feedback</button>
+  </div>
+
+  <!-- Upload Page -->
+  <div id="upload" style="display:none">
+    <h2>Sube tu Video</h2>
+    <div class="upload-form">
+      <input type="file" accept="video/*" id="videoUpload">
+      <textarea id="uploadComments" placeholder="¿Hay algo específico en lo que te gustaría recibir ayuda?"></textarea>
+      <button onclick="submitUpload()">Enviar</button>
+    </div>
+    <button onclick="window.location.href='progress.html'">Ver Progreso</button>
+  </div>
+
+  <!-- Progress Page -->
+  <div id="progress" style="display:none">
+    <h2>Tu Progreso</h2>
+    <div class="progress-container">
+      <label for="modulesDone">Módulos Completados</label><br>
+      <input type="number" id="modulesDone" min="0" max="6"><br><br>
+
+      <label for="practiceTime">Tiempo Total de Práctica (min)</label><br>
+      <input type="number" id="practiceTime" min="0"><br><br>
+
+      <label for="reflections">Reflexiones Registradas</label><br>
+      <input type="number" id="reflections" min="0"><br><br>
+
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+
+      <div class="badges" id="badgeList"></div>
+
+      <button onclick="saveProgress()">Guardar Progreso</button>
+    </div>
+    <button onclick="window.location.href='modules.html'">Volver al Menú</button>
+  </div>
+
+  <!-- Profile Page -->
+  <div id="profile" style="display:none">
+    <h2>Mi Perfil</h2>
+    <div class="profile">
+      <input type="text" id="username" placeholder="Nombre"><br>
+      <input type="email" id="email" placeholder="Correo"><br>
+      <input type="text" id="goal" placeholder="Objetivo de aprendizaje"><br>
+      <div class="progress-bar">
+        <div class="progress-bar-fill" style="width: 20%;"></div>
+      </div>
+      <button onclick="saveProfile()">Guardar Cambios</button>
+    </div>
+    <button onclick="window.location.href='modules.html'">Volver al Menú</button>
+  </div>
+
+  <script>
+    // Nav & Page Handling
+    const path = window.location.pathname;
+    const hideMain = () => {
+      document.getElementById("mainTitle")?.remove();
+      document.getElementById("mainDesc")?.remove();
+      document.getElementById("mainBtn")?.remove();
+    };
+
+    if (path.includes("modules.html")) {
+      hideMain(); document.getElementById("modules").style.display = "block";
+    } else if (path.includes("demo.html")) {
+      hideMain(); document.getElementById("demo").style.display = "block";
+    } else if (path.includes("practice.html")) {
+      hideMain(); document.getElementById("practice").style.display = "block";
+    } else if (path.includes("upload.html")) {
+      hideMain(); document.getElementById("upload").style.display = "block";
+    } else if (path.includes("progress.html")) {
+      hideMain(); document.getElementById("progress").style.display = "block";
+      loadProgress();
+    } else if (path.includes("profile.html")) {
+      hideMain(); document.getElementById("profile").style.display = "block";
+      loadProfile();
+    } else if (path.includes("login.html")) {
+      hideMain(); document.getElementById("login").style.display = "block";
+    }
+
+    // Upload Badge
+    function submitUpload() {
+      const file = document.getElementById('videoUpload').files[0];
+      if (file) {
+        localStorage.setItem('uploadSubmitted', 'true');
+        alert('¡Gracias! Tu video ha sido enviado para revisión.');
+      } else {
+        alert('Por favor, selecciona un archivo.');
+      }
+    }
+
+    // Save + Load Profile
+    function saveProfile() {
+      localStorage.setItem('username', document.getElementById('username').value);
+      localStorage.setItem('email', document.getElementById('email').value);
+      localStorage.setItem('goal', document.getElementById('goal').value);
+      alert('¡Perfil actualizado!');
+    }
+
+    function loadProfile() {
+      document.getElementById('username').value = localStorage.getItem('username') || 'Cristian R.';
+      document.getElementById('email').value = localStorage.getItem('email') || 'cr@example.com';
+      document.getElementById('goal').value = localStorage.getItem('goal') || 'Completar los 6 niveles de técnica básica';
+    }
+
+    // Save + Load Progress
+    function saveProgress() {
+      const modules = parseInt(document.getElementById('modulesDone').value) || 0;
+      const time = parseInt(document.getElementById('practiceTime').value) || 0;
+      const reflections = parseInt(document.getElementById('reflections').value) || 0;
+      localStorage.setItem('modulesDone', modules);
+      localStorage.setItem('practiceTime', time);
+      localStorage.setItem('reflections', reflections);
+      updateProgressBar(modules);
+      updateBadges(modules, reflections);
+      alert('¡Progreso guardado con éxito!');
+    }
+
+    function updateProgressBar(modules) {
+      document.getElementById('progressFill').style.width = `${(modules / 6) * 100}%`;
+    }
+
+    function updateBadges(modules, reflections) {
+      const badgeList = document.getElementById('badgeList');
+      badgeList.innerHTML = '';
+      if (modules >= 1) badgeList.innerHTML += '<div class="badge">🎉 First Step!</div>';
+      if (reflections >= 3) badgeList.innerHTML += '<div class="badge">🧠 Reflection Champ</div>';
+      if (localStorage.getItem('uploadSubmitted') === 'true') badgeList.innerHTML += '<div class="badge">🤝 Community Contributor</div>';
+    }
+
+    function loadProgress() {
+      const modules = parseInt(localStorage.getItem('modulesDone')) || 1;
+      const time = parseInt(localStorage.getItem('practiceTime')) || 45;
+      const reflections = parseInt(localStorage.getItem('reflections')) || 3;
+      document.getElementById('modulesDone').value = modules;
+      document.getElementById('practiceTime').value = time;
+      document.getElementById('reflections').value = reflections;
+      updateProgressBar(modules);
+      updateBadges(modules, reflections);
+    }
+  </script>
+</body>
+</html>
